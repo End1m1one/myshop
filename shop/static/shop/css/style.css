@@ -1,0 +1,28 @@
+.navbar {
+  position: relative;
+  min-height: 40px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+}
+
+.img{
+    object-fit: cover;
+    vertical-align: middle;
+     border-style: none;
+    height: 70vh;
+}
+
+
+.pagination .active .page-link {
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+.pagination .active .page-link:hover {
+  background-color: black;
+  border-color: black;
+  color: white;
+}
+
+

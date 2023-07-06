@@ -1,0 +1,261 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+<!doctype html>
+<title>{{title}}</title>
+<html lang="en">
+
+
+<body>
+
+{% block content %}
+<head>
+   <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link type="text/css" href="{% static 'cart/css/cart_style.css' %}" rel="stylesheet" />
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
+
+<section class="h-100 h-custom" style="background-color: 	#ffffff; margin-bottom: 200px;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-8">
+                <div class="p-5">
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                    <div class="d-flex justify-content-between mb-4">
+
+                    </div>
+                  </div>
+                  {% for item in cart %}
+                  {% with product=item.product %}
+                  <hr class="my-4">
+
+                  <div class="row mb-4 d-flex justify-content-between align-items-center">
+  <div class="col-md-2 col-lg-2 col-xl-2">
+    <img class="img-fluid rounded-3" src="{{ product.image.url }}" alt="Product photo">
+  </div>
+  <div class="col-md-3 col-lg-3 col-xl-3">
+    <a href="{% url 'category' product.category.slug %}" style="text-decoration:none;"><h6 class="text-muted">{{ product.category }}</h6></a>
+    <a href="{{ product.get_absolute_url }}" style="text-decoration:none;"><h6 class="text-black mb-0">{{ product.name }}</h6></a>
+  </div>
+
+
+
+ <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+  <form class="update-form" data-product-id="{{ item.product.id }}">
+    {% csrf_token %}
+    <button class="btn btn-link px-2" onclick="decrementQuantity(this)">
+      <i class="fas fa-minus"></i>
+    </button>
+    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="20" class="form-control form-control-sm" required>
+    <button class="btn btn-link px-2" onclick="incrementQuantity(this)">
+      <i class="fas fa-plus"></i>
+    </button>
+    <input type="hidden" name="override" value="True">
+  </form>
+</div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                      <h6 class="mb-0">{{item.price}}</h6>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <form action="{% url 'cart_remove' product.id %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-link text-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
+  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+</svg></button>
+  </form>
+</div>
+</div>
+                  {% endwith %}
+                  {% endfor %}
+                  <hr class="my-4">
+
+                  <div class="pt-5">
+                    <h6 class="mb-0"><a href="{% url 'home' %}" class="text-body"><i
+                          class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                  </div>
+</div>
+              </div>
+              <div class="col-lg-4 bg-grey">
+                <div class="p-5">
+                  <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                  <hr class="my-4">
+
+                  <div class="d-flex justify-content-between mb-4">
+                       {% with total_items=cart|length %}
+                    <h5 class="text-uppercase" id="total-items">{{total_items}} item{{total_items|pluralize}}</h5>
+                    {% endwith %}
+                      <h5 class="mb-0" id="total-price">{{ cart.get_total_price }}</h5>
+                  </div>
+
+                  <h5 class="text-uppercase mb-3">Shipping</h5>
+
+                  <div class="mb-4 pb-2">
+  <select class="select" id="delivery-select"  onchange="updatePrice()">
+      <option value="1">One</option>
+    <option value="2">Standard-Delivery- €5.00</option>
+    <option value="3">Two</option>
+    <option value="4">Three</option>
+    <option value="5">Four</option>
+  </select>
+</div>
+
+
+
+
+                  <a href="{% url 'order_create' %}"><button type="button" class="btn btn-dark btn-block btn-lg"
+                    data-mdb-ripple-color="dark">Check out</button></a>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Function to set the selected option in localStorage
+function setSelectedOption(optionValue) {
+  localStorage.setItem('selectedOption', optionValue);
+}
+
+// Function to get the selected option from localStorage
+function getSelectedOption() {
+  return localStorage.getItem('selectedOption');
+}
+function decrementQuantity(button) {
+  var input = button.parentNode.querySelector('input[type="number"]');
+  if (input.value > input.min) {
+    input.stepDown();
+    updateQuantity(input);
+  }
+}
+
+function incrementQuantity(button) {
+  var input = button.parentNode.querySelector('input[type="number"]');
+  if (input.value < input.max) {
+    input.stepUp();
+    updateQuantity(input);
+  }
+}
+
+function updateQuantity(input) {
+  var form = input.parentNode;
+  const formData = new FormData(form);
+  const product_id = form.dataset.productId; // Use dataset to access the product ID
+  fetch("{% url 'cart_add' 0 %}".replace('0', product_id), {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Cart data:', data);
+    // Update the total price dynamically
+    updateTotalPrice(input, data.total_price);
+    // Update the total items dynamically
+    updateTotalItems(data.total_items);
+    // Optional: Display a success message or perform any additional actions
+  })
+  .catch(error => console.error(error));
+}
+// Function to update the price based on the selected option
+function updatePrice() {
+  var selectElement = document.getElementById('delivery-select');
+  var optionValue = parseInt(selectElement.value);
+  var priceElement = document.getElementById('total-price');
+  var totalPrice = parseFloat(priceElement.textContent);
+
+  if (optionValue === 2) {
+    totalPrice += 5; // Add 5 points if option 2 is selected
+  } else if (optionValue === 3) {
+    totalPrice += 10; // Add 10 points if option 3 is selected
+  }
+
+  priceElement.textContent = formatPrice(totalPrice);
+
+  // Store the selected option in localStorage
+  setSelectedOption(optionValue);
+}
+
+// Function to initialize the selected option on page load
+function initializeSelectedOption() {
+  var selectElement = document.getElementById('delivery-select');
+  var selectedOption = getSelectedOption();
+
+  if (selectedOption !== null) {
+    selectElement.value = selectedOption;
+  }
+}
+
+// Call the function to initialize the selected option
+initializeSelectedOption();
+
+// Existing code...
+document.querySelectorAll('.update-form').forEach(function(form) {
+  form.querySelector('input[type="number"]').addEventListener('change', function(event) {
+    event.preventDefault();
+    const input = this;
+    const formData = new FormData(form);
+    const product_id = form.dataset.productId; // Use dataset to access the product ID
+    fetch("{% url 'cart_add' 0 %}".replace('0', product_id), {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Cart data:', data);
+      // Update the total price dynamically
+      updateTotalPrice(input, data.total_price);
+      // Update the total items dynamically
+      updateTotalItems(data.total_items);
+      // Optional: Display a success message or perform any additional actions
+    })
+    .catch(error => console.error(error));
+  });
+});
+
+function updateTotalPrice(input, total_price) {
+  var priceElement = document.getElementById('total-price');
+  var quantity = input.value;
+  var price = parseFloat(total_price);
+  var total = (price * quantity) / quantity;
+  priceElement.innerText = formatPrice(total);
+}
+
+function updateTotalItems(total_items) {
+  var totalItemsElement = document.getElementById('total-items');
+  if (totalItemsElement) {
+    totalItemsElement.innerText = total_items + " item" + (total_items === 1 ? "" : "s");
+  }
+}
+
+function formatPrice(price) {
+  return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+</script>
+</body>
+</html>
+{% endblock %}
+
+
